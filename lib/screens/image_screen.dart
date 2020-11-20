@@ -191,21 +191,6 @@ class _ImageScreenState extends State<ImageScreen> {
                           ],
                         ).show(context);
                       },
-                      // onPressed: () async {
-                      //   int location = WallpaperManager.HOME_SCREEN;
-                      //   var file = await DefaultCacheManager()
-                      //       .getSingleFile(photoData.image.portrait);
-                      //   String result;
-                      //   try {
-                      //     result = await WallpaperManager.setWallpaperFromFile(
-                      //         file.path, location);
-                      //   } on PlatformException {
-                      //     result = "Failed to get Wallpaper.";
-                      //   }
-                      //   Toast.show(result, context,
-                      //       duration: Toast.LENGTH_SHORT,
-                      //       gravity: Toast.BOTTOM);
-                      // },
                     ),
                   ],
                 ),

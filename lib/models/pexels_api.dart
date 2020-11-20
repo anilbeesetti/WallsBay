@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
 import 'package:wallsy/keys/private_keys.dart';
 import 'package:wallsy/models/image_model.dart';
 import 'package:http/http.dart' as http;
