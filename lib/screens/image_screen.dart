@@ -93,21 +93,119 @@ class _ImageScreenState extends State<ImageScreen> {
                     FlatButton.icon(
                       icon: Icon(Icons.wallpaper_outlined),
                       label: Text('Set as Wallpaper'),
-                      onPressed: () async {
-                        int location = WallpaperManager.HOME_SCREEN;
-                        var file = await DefaultCacheManager()
-                            .getSingleFile(photoData.image.portrait);
-                        String result;
-                        try {
-                          result = await WallpaperManager.setWallpaperFromFile(
-                              file.path, location);
-                        } on PlatformException {
-                          result = "Failed to get Wallpaper.";
-                        }
-                        Toast.show(result, context,
-                            duration: Toast.LENGTH_SHORT,
-                            gravity: Toast.BOTTOM);
+                      onPressed: () {
+                        SimpleDialog(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 20, top: 10, bottom: 10),
+                              child: Text(
+                                'Set Wallpaper',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () async {
+                                Navigator.pop(context);
+                                int location = WallpaperManager.HOME_SCREEN;
+                                var file = await DefaultCacheManager()
+                                    .getSingleFile(photoData.image.portrait);
+                                String result;
+                                try {
+                                  result = await WallpaperManager
+                                      .setWallpaperFromFile(
+                                          file.path, location);
+                                } on PlatformException {
+                                  result = "Failed to get Wallpaper.";
+                                }
+                                Toast.show(result, context,
+                                    duration: Toast.LENGTH_SHORT,
+                                    gravity: Toast.BOTTOM);
+                              },
+                              child: ListTile(
+                                minLeadingWidth: 10,
+                                leading: Icon(
+                                  Icons.home_outlined,
+                                  color: Colors.blue[700],
+                                ),
+                                title: Text('Home screen'),
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () async {
+                                Navigator.pop(context);
+                                int location = WallpaperManager.LOCK_SCREEN;
+                                var file = await DefaultCacheManager()
+                                    .getSingleFile(photoData.image.portrait);
+                                String result;
+                                try {
+                                  result = await WallpaperManager
+                                      .setWallpaperFromFile(
+                                          file.path, location);
+                                } on PlatformException {
+                                  result = "Failed to get Wallpaper.";
+                                }
+                                Toast.show(result, context,
+                                    duration: Toast.LENGTH_SHORT,
+                                    gravity: Toast.BOTTOM);
+                              },
+                              child: ListTile(
+                                minLeadingWidth: 10,
+                                leading: Icon(
+                                  Icons.lock_outline,
+                                  color: Colors.blue[700],
+                                ),
+                                title: Text('Lock screen'),
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () async {
+                                Navigator.pop(context);
+                                int location = WallpaperManager.BOTH_SCREENS;
+                                var file = await DefaultCacheManager()
+                                    .getSingleFile(photoData.image.portrait);
+                                String result;
+                                try {
+                                  result = await WallpaperManager
+                                      .setWallpaperFromFile(
+                                          file.path, location);
+                                } on PlatformException {
+                                  result = "Failed to get Wallpaper.";
+                                }
+                                Toast.show(result, context,
+                                    duration: Toast.LENGTH_SHORT,
+                                    gravity: Toast.BOTTOM);
+                              },
+                              child: ListTile(
+                                minLeadingWidth: 10,
+                                leading: Icon(
+                                  Icons.phone_android_outlined,
+                                  color: Colors.blue[700],
+                                ),
+                                title: Text('Home screen and lock screen'),
+                              ),
+                            ),
+                          ],
+                        ).show(context);
                       },
+                      // onPressed: () async {
+                      //   int location = WallpaperManager.HOME_SCREEN;
+                      //   var file = await DefaultCacheManager()
+                      //       .getSingleFile(photoData.image.portrait);
+                      //   String result;
+                      //   try {
+                      //     result = await WallpaperManager.setWallpaperFromFile(
+                      //         file.path, location);
+                      //   } on PlatformException {
+                      //     result = "Failed to get Wallpaper.";
+                      //   }
+                      //   Toast.show(result, context,
+                      //       duration: Toast.LENGTH_SHORT,
+                      //       gravity: Toast.BOTTOM);
+                      // },
                     ),
                   ],
                 ),
