@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wallsy/models/pexels_api.dart';
-import 'package:wallsy/widgets/image_tile.dart';
+import 'package:wallsy/screens/search_screen.dart';
+import 'package:wallsy/widgets/gridview_photos_builder.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -11,12 +12,13 @@ class _HomeScreenState extends State<HomeScreen> {
   var isLoading = false;
   var isScrollLoading = false;
   ScrollController _scrollController = ScrollController();
+
   @override
   void initState() {
     setState(() {
       isLoading = true;
     });
-    PexelsData.getImages(PexelsData.url).then((value) => setState(() {
+    PexelsData.getImages(PexelsData.homeUrl).then((value) => setState(() {
           isLoading = false;
         }));
 
@@ -28,8 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         isScrollLoading = true;
       });
-      print(PexelsData.url);
-      await PexelsData.getImages(PexelsData.url);
+      await PexelsData.getImages(PexelsData.homeUrl);
       setState(() {
         isScrollLoading = false;
       });
@@ -65,42 +66,100 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SearchScreen(),
+                  ));
+            },
+          )
+        ],
       ),
-      body: isLoading
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : Column(
-              children: [
-                Expanded(
-                  child: GridView.builder(
-                    controller: _scrollController,
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                    itemCount: PexelsData.pexelsPhotosData.length == 0
-                        ? 0
-                        : PexelsData.pexelsPhotosData.length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 0.6,
-                      mainAxisSpacing: 8,
-                      crossAxisSpacing: 8,
-                    ),
-                    itemBuilder: (context, index) {
-                      return ImageTile(
-                          imgUrlPortrait:
-                              PexelsData.pexelsPhotosData[index].image.portrait,
-                          key: ValueKey(
-                              PexelsData.pexelsPhotosData[index].imageId),
-                          imgUrl:
-                              PexelsData.pexelsPhotosData[index].image.large);
-                    },
-                  ),
+      body: Column(
+        children: [
+          Container(
+              height: 90,
+              child: ListView.builder(
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 15),
+                scrollDirection: Axis.horizontal,
+                itemCount: PexelsData.categoryList.length,
+                itemBuilder: (context, index) => CustomListViewCategory(
+                  index: index,
                 ),
-                isScrollLoading
-                    ? CircularProgressIndicator()
-                    : SizedBox.shrink(),
-              ],
+              )),
+          isLoading
+              ? Expanded(
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                )
+              : GridViewPhotosBuilder(
+                  scrollController: _scrollController,
+                  itemCount: PexelsData.pexelsPhotosData.length,
+                  data: PexelsData.pexelsPhotosData,
+                  getPhoto: PexelsData.getHomePhoto,
+                ),
+          isScrollLoading ? CircularProgressIndicator() : SizedBox.shrink(),
+        ],
+      ),
+    );
+  }
+}
+
+class CustomListViewCategory extends StatelessWidget {
+  final int index;
+  const CustomListViewCategory({
+    Key key,
+    @required this.index,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(
+          builder: (context) {
+            return SearchScreen(
+              isCategory: true,
+              searchString: PexelsData.categoryList[index].categoryName,
+            );
+          },
+        ));
+      },
+      child: Container(
+        margin: EdgeInsets.only(right: 10),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Image.network(
+                PexelsData.categoryList[index].categoryImageUrl,
+                fit: BoxFit.cover,
+                width: 110,
+              ),
             ),
+            Container(
+              alignment: Alignment.center,
+              width: 110,
+              decoration: BoxDecoration(
+                  color: Colors.black38,
+                  borderRadius: BorderRadius.circular(10)),
+              child: Text(
+                PexelsData.categoryList[index].categoryName,
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white70),
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }

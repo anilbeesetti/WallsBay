@@ -4,9 +4,15 @@ import 'package:wallsy/screens/image_screen.dart';
 class ImageTile extends StatelessWidget {
   final String imgUrl;
   final String imgUrlPortrait;
+  final int id;
+  final Function getFunction;
 
   const ImageTile(
-      {Key key, @required this.imgUrl, @required this.imgUrlPortrait})
+      {Key key,
+      @required this.imgUrl,
+      @required this.imgUrlPortrait,
+      this.id,
+      @required this.getFunction})
       : super(key: key);
 
   @override
@@ -17,23 +23,21 @@ class ImageTile extends StatelessWidget {
           context,
           MaterialPageRoute(
               builder: (context) => ImageScreen(
-                    imgUrl: imgUrlPortrait,
+                    id: id,
+                    getPhotoFunction: getFunction,
                   )),
         );
       },
       child: GridTile(
-        child: Hero(
-          tag: imgUrlPortrait,
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(16),
-              child: Image.network(
-                imgUrl,
-                fit: BoxFit.cover,
-              ),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(16),
+            child: Image.network(
+              imgUrl,
+              fit: BoxFit.cover,
             ),
           ),
         ),
