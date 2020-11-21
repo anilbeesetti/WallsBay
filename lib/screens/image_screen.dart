@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:ndialog/ndialog.dart';
-import 'package:toast/toast.dart';
-import 'package:wallpaper_manager/wallpaper_manager.dart';
 import 'package:wallsy/models/image_model.dart';
+import 'package:wallsy/widgets/download_button.dart';
+import 'package:wallsy/widgets/set_wallpaper_button.dart';
 
 class ImageScreen extends StatefulWidget {
   final int id;
@@ -23,8 +20,8 @@ class _ImageScreenState extends State<ImageScreen> {
 
   @override
   void initState() {
+    photoData = widget.getPhotoFunction(widget.id);
     setState(() {
-      photoData = widget.getPhotoFunction(widget.id);
       isLoading = false;
     });
 
@@ -55,155 +52,8 @@ class _ImageScreenState extends State<ImageScreen> {
                           EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                       child: Row(
                         children: [
-                          FlatButton.icon(
-                            icon: Icon(Icons.download_outlined),
-                            label: Text('Download'),
-                            onPressed: () {
-                              SimpleDialog(
-                                children: [
-                                  InkWell(
-                                    onTap: () {},
-                                    child: ListTile(
-                                      minLeadingWidth: 10,
-                                      leading: Icon(
-                                        Icons.file_download,
-                                      ),
-                                      title: Text('Download Orginal Image'),
-                                    ),
-                                  ),
-                                  InkWell(
-                                    onTap: () {},
-                                    child: ListTile(
-                                      minLeadingWidth: 10,
-                                      leading: Icon(
-                                        Icons.file_download,
-                                      ),
-                                      title: Text('Download Portrait Image'),
-                                    ),
-                                  ),
-                                  InkWell(
-                                    onTap: () {},
-                                    child: ListTile(
-                                      minLeadingWidth: 10,
-                                      leading: Icon(
-                                        Icons.file_download,
-                                      ),
-                                      title: Text('Download Landscape Image'),
-                                    ),
-                                  ),
-                                ],
-                              ).show(context);
-                            },
-                          ),
-                          FlatButton.icon(
-                            icon: Icon(Icons.wallpaper_outlined),
-                            label: Text('Set as Wallpaper'),
-                            onPressed: () {
-                              SimpleDialog(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 20, top: 10, bottom: 10),
-                                    child: Text(
-                                      'Set Wallpaper',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 20,
-                                      ),
-                                    ),
-                                  ),
-                                  InkWell(
-                                    onTap: () async {
-                                      Navigator.pop(context);
-                                      int location =
-                                          WallpaperManager.HOME_SCREEN;
-                                      var file = await DefaultCacheManager()
-                                          .getSingleFile(
-                                              photoData.image.portrait);
-                                      String result;
-                                      try {
-                                        result = await WallpaperManager
-                                            .setWallpaperFromFile(
-                                                file.path, location);
-                                      } on PlatformException {
-                                        result = "Failed to get Wallpaper.";
-                                      }
-                                      Toast.show(result, context,
-                                          duration: Toast.LENGTH_SHORT,
-                                          gravity: Toast.BOTTOM);
-                                    },
-                                    child: ListTile(
-                                      minLeadingWidth: 10,
-                                      leading: Icon(
-                                        Icons.home_outlined,
-                                        color: Colors.blue[700],
-                                      ),
-                                      title: Text('Home screen'),
-                                    ),
-                                  ),
-                                  InkWell(
-                                    onTap: () async {
-                                      Navigator.pop(context);
-                                      int location =
-                                          WallpaperManager.LOCK_SCREEN;
-                                      var file = await DefaultCacheManager()
-                                          .getSingleFile(
-                                              photoData.image.portrait);
-                                      String result;
-                                      try {
-                                        result = await WallpaperManager
-                                            .setWallpaperFromFile(
-                                                file.path, location);
-                                      } on PlatformException {
-                                        result = "Failed to get Wallpaper.";
-                                      }
-                                      Toast.show(result, context,
-                                          duration: Toast.LENGTH_SHORT,
-                                          gravity: Toast.BOTTOM);
-                                    },
-                                    child: ListTile(
-                                      minLeadingWidth: 10,
-                                      leading: Icon(
-                                        Icons.lock_outline,
-                                        color: Colors.blue[700],
-                                      ),
-                                      title: Text('Lock screen'),
-                                    ),
-                                  ),
-                                  InkWell(
-                                    onTap: () async {
-                                      Navigator.pop(context);
-                                      int location =
-                                          WallpaperManager.BOTH_SCREENS;
-                                      var file = await DefaultCacheManager()
-                                          .getSingleFile(
-                                              photoData.image.portrait);
-                                      String result;
-                                      try {
-                                        result = await WallpaperManager
-                                            .setWallpaperFromFile(
-                                                file.path, location);
-                                      } on PlatformException {
-                                        result = "Failed to get Wallpaper.";
-                                      }
-                                      Toast.show(result, context,
-                                          duration: Toast.LENGTH_SHORT,
-                                          gravity: Toast.BOTTOM);
-                                    },
-                                    child: ListTile(
-                                      minLeadingWidth: 10,
-                                      leading: Icon(
-                                        Icons.phone_android_outlined,
-                                        color: Colors.blue[700],
-                                      ),
-                                      title:
-                                          Text('Home screen and lock screen'),
-                                    ),
-                                  ),
-                                ],
-                              ).show(context);
-                            },
-                          ),
+                          DownloadButton(photoData: photoData),
+                          SetWallpaperButton(photoData: photoData),
                         ],
                       ),
                     ),
