@@ -8,7 +8,7 @@ class PexelsData {
   static String defaultHomeUrl = 'https://api.pexels.com/v1/curated';
   static String homeUrl = defaultHomeUrl;
   static String defaultSearchUrl = 'https://api.pexels.com/v1/search';
-  static String searchUrl = defaultSearchUrl;
+  static String searchUrl;
   static String apiKey = PrivateKey.apiKey;
   static List<PhotoObjectModel> pexelsPhotosData = [];
   static List<PhotoObjectModel> searchPhotosData = [];
@@ -45,13 +45,21 @@ class PexelsData {
     ),
   ];
 
-  static Future<dynamic> _getResponse(String url) async {
+  // Http Call to Pexels Api //
+  // Http Call to Pexels Api //
+  // Http Call to Pexels Api //
+
+  static Future<http.Response> _getResponse(String url) async {
     var response = await http.get(
       url,
       headers: {"Authorization": apiKey},
     );
-    return jsonDecode(response.body);
+    return response;
   }
+
+  // Saving Data to custom Model //
+  // Saving Data to custom Model //
+  // Saving Data to custom Model //
 
   static void _saveData(
       dynamic responseData, List<PhotoObjectModel> photosData) {
@@ -73,24 +81,41 @@ class PexelsData {
     });
   }
 
+  // Get Home Images //
+  // Get Home Images //
+  // Get Home Images //
+
   static Future<void> getImages(String url) async {
-    var responseData = await _getResponse(url);
+    var response = await _getResponse(url);
+    var responseData = jsonDecode(response.body);
     PexelsData.homeUrl = responseData['next_page'];
     _saveData(responseData, pexelsPhotosData);
   }
+
+  // Search Images //
+  // Search Images //
+  // Search Images //
 
   static Future<void> searchImages(String searchString, String url) async {
     var finalUrl = url + '?query=$searchString';
     searchPhotosData = [];
 
-    var responseData = await _getResponse(finalUrl);
+    var response = await _getResponse(finalUrl);
+    var responseData = jsonDecode(response.body);
     PexelsData.searchUrl = responseData['next_page'];
     _saveData(responseData, searchPhotosData);
   }
 
+  // [ Helper Functions ] //
+
   static Future<void> updateImages() async {
-    var responseData = await _getResponse(searchUrl);
-    _saveData(responseData, searchPhotosData);
+    if (searchUrl != null) {
+      var response = await _getResponse(searchUrl);
+      if (response.statusCode == 200) {
+        var responseData = jsonDecode(response.body);
+        _saveData(responseData, searchPhotosData);
+      }
+    }
   }
 
   static PhotoObjectModel getHomePhoto(int id) {

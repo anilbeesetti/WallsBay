@@ -22,8 +22,14 @@ class CustomSearchBar extends StatelessWidget {
         children: [
           Expanded(
             child: TextField(
+              textInputAction: TextInputAction.done,
               controller: _textController,
               autofocus: false,
+              onEditingComplete: () {
+                onPressed();
+                _textController.clear();
+                FocusScope.of(context).unfocus();
+              },
               decoration: InputDecoration(
                 hintText: 'Search for wallpapers',
                 border: InputBorder.none,
@@ -31,8 +37,13 @@ class CustomSearchBar extends StatelessWidget {
             ),
           ),
           IconButton(
+            splashRadius: 4,
             icon: Icon(Icons.search_rounded),
-            onPressed: onPressed,
+            onPressed: () {
+              onPressed();
+              _textController.clear();
+              FocusScope.of(context).unfocus();
+            },
           )
         ],
       ),

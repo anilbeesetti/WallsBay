@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 
-import 'package:permission_handler/permission_handler.dart';
 import 'package:toast/toast.dart';
 import 'package:wallsy/models/image_model.dart';
 import 'package:ndialog/ndialog.dart';
@@ -72,28 +71,16 @@ class ListTileButton extends StatefulWidget {
 
 class _ListTileButtonState extends State<ListTileButton> {
   _save(BuildContext context, String photo, int id) async {
-    PermissionStatus status;
-    status = await Permission.storage.status;
-
-    if (status.isUndetermined) {
-      status = await _askPermission();
+    var response;
+    Navigator.pop(context);
+    try {
+      response = await GallerySaver.saveImage(photo);
+    } catch (e) {
+      print(e);
+      response = false;
     }
-    if (status.isGranted) {
-      var response;
-      try {
-        response = await GallerySaver.saveImage(photo);
-      } catch (e) {
-        print(e);
-        response = false;
-      }
-      Toast.show(response ? 'Download Complete' : 'Download Error', context,
-          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
-      Navigator.pop(context);
-    }
-  }
-
-  Future<PermissionStatus> _askPermission() async {
-    return await Permission.storage.request();
+    Toast.show(response ? 'Download Complete' : 'Download Error', context,
+        duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
   }
 
   @override

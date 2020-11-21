@@ -27,7 +27,7 @@ class _SearchScreenState extends State<SearchScreen> {
       setState(() {
         isScrollLoading = true;
       });
-      await PexelsData.updateImages();
+      var response = await PexelsData.updateImages();
       setState(() {
         isScrollLoading = false;
       });
@@ -120,12 +120,21 @@ class _SearchScreenState extends State<SearchScreen> {
                       child: CircularProgressIndicator(),
                     ),
                   )
-                : GridViewPhotosBuilder(
-                    scrollController: _scrollController,
-                    itemCount: PexelsData.searchPhotosData.length,
-                    data: PexelsData.searchPhotosData,
-                    getPhoto: PexelsData.getSearchPhoto,
-                  ),
+                : PexelsData.searchPhotosData.length == 0
+                    ? Expanded(
+                        child: Center(
+                          child: Text(
+                            'No Search Results Found...',
+                            style: TextStyle(fontSize: 15),
+                          ),
+                        ),
+                      )
+                    : GridViewPhotosBuilder(
+                        scrollController: _scrollController,
+                        itemCount: PexelsData.searchPhotosData.length,
+                        data: PexelsData.searchPhotosData,
+                        getPhoto: PexelsData.getSearchPhoto,
+                      ),
             isScrollLoading ? CircularProgressIndicator() : SizedBox.shrink(),
           ],
         ),

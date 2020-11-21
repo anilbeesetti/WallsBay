@@ -19,11 +19,16 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       isLoading = true;
     });
-    PexelsData.getImages(PexelsData.homeUrl).then((value) => setState(() {
+    getData().then((value) => setState(() {
           isLoading = false;
         }));
 
     super.initState();
+  }
+
+  Future<Null> getData() async {
+    await PexelsData.getImages(PexelsData.homeUrl);
+    return null;
   }
 
   void loadData() async {
@@ -58,11 +63,11 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               TextSpan(
                 text: 'Wall',
-                style: TextStyle(color: Colors.black87),
+                style: TextStyle(color: Colors.black87, fontFamily: 'Lato'),
               ),
               TextSpan(
                 text: 'Sy',
-                style: TextStyle(color: Colors.blue),
+                style: TextStyle(color: Colors.blue, fontFamily: 'Lato'),
               ),
             ],
           ),

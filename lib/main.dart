@@ -11,6 +11,7 @@ class MyApp extends StatelessWidget {
       title: 'Wallsy',
       theme: ThemeData(
         primaryColor: Colors.white,
+        fontFamily: 'Lato',
       ),
       home: HomeScreen(),
     );
