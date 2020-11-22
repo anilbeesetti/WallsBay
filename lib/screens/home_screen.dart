@@ -20,16 +20,11 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       isLoading = true;
     });
-    getData().then((value) => setState(() {
+    PexelsData.getImages(PexelsData.homeUrl).then((value) => setState(() {
           isLoading = false;
         }));
 
     super.initState();
-  }
-
-  Future<Null> getData() async {
-    await PexelsData.getImages(PexelsData.homeUrl);
-    return null;
   }
 
   void loadData() async {
@@ -61,6 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
         title: AppTitle(),
         actions: [
           IconButton(
+            splashRadius: 28,
             icon: Icon(Icons.search),
             onPressed: () {
               Navigator.push(

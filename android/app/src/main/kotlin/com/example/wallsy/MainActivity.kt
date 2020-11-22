@@ -1,4 +1,4 @@
-package com.example.wallsy
+package com.codeinit.wallsbay
 
 import io.flutter.embedding.android.FlutterActivity
 
