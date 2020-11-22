@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wallsy/models/pexels_api.dart';
+import 'package:wallsy/widgets/app_title.dart';
 import 'package:wallsy/widgets/custom_search_bar.dart';
 import 'package:wallsy/widgets/gridview_photos_builder.dart';
 
@@ -27,7 +28,7 @@ class _SearchScreenState extends State<SearchScreen> {
       setState(() {
         isScrollLoading = true;
       });
-      var response = await PexelsData.updateImages();
+      await PexelsData.updateImages();
       setState(() {
         isScrollLoading = false;
       });
@@ -65,21 +66,7 @@ class _SearchScreenState extends State<SearchScreen> {
           ? AppBar(
               centerTitle: true,
               elevation: 0.0,
-              title: RichText(
-                text: TextSpan(
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26),
-                  children: [
-                    TextSpan(
-                      text: 'Wall',
-                      style: TextStyle(color: Colors.black87),
-                    ),
-                    TextSpan(
-                      text: 'Sy',
-                      style: TextStyle(color: Colors.blue),
-                    ),
-                  ],
-                ),
-              ),
+              title: AppTitle(),
             )
           : null,
       body: SafeArea(

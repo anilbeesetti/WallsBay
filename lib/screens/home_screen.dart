@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wallsy/models/pexels_api.dart';
 import 'package:wallsy/screens/search_screen.dart';
+import 'package:wallsy/widgets/app_title.dart';
 import 'package:wallsy/widgets/custom_listview_category.dart';
 import 'package:wallsy/widgets/gridview_photos_builder.dart';
 
@@ -57,21 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         centerTitle: true,
         elevation: 0.0,
-        title: RichText(
-          text: TextSpan(
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26),
-            children: [
-              TextSpan(
-                text: 'Wall',
-                style: TextStyle(color: Colors.black87, fontFamily: 'Lato'),
-              ),
-              TextSpan(
-                text: 'Sy',
-                style: TextStyle(color: Colors.blue, fontFamily: 'Lato'),
-              ),
-            ],
-          ),
-        ),
+        title: AppTitle(),
         actions: [
           IconButton(
             icon: Icon(Icons.search),

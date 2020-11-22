@@ -34,7 +34,6 @@ class GridViewPhotosBuilder extends StatelessWidget {
         itemBuilder: (context, index) {
           var photoData = data[index];
           return ImageTile(
-            imgUrlPortrait: photoData.image.portrait,
             id: photoData.imageId,
             key: ValueKey(photoData.imageId),
             imgUrl: photoData.image.large,

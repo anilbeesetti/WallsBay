@@ -3,16 +3,11 @@ import 'package:wallsy/screens/image_screen.dart';
 
 class ImageTile extends StatelessWidget {
   final String imgUrl;
-  final String imgUrlPortrait;
   final int id;
   final Function getFunction;
 
   const ImageTile(
-      {Key key,
-      @required this.imgUrl,
-      @required this.imgUrlPortrait,
-      this.id,
-      @required this.getFunction})
+      {Key key, @required this.imgUrl, this.id, @required this.getFunction})
       : super(key: key);
 
   @override
@@ -25,19 +20,30 @@ class ImageTile extends StatelessWidget {
               builder: (context) => ImageScreen(
                     id: id,
                     getPhotoFunction: getFunction,
+                    placeHolderImage: imgUrl,
                   )),
         );
       },
       child: GridTile(
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(16),
-            child: Image.network(
-              imgUrl,
-              fit: BoxFit.cover,
+              borderRadius: BorderRadius.circular(16),
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  blurRadius: 2,
+                  offset: Offset(0, 1),
+                  color: Colors.black38,
+                )
+              ]),
+          child: Hero(
+            tag: imgUrl,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: Image.network(
+                imgUrl,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         ),
