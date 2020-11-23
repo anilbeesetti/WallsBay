@@ -1,4 +1,4 @@
-# wallsy
+# WallsBay
 
 A new Flutter project.
 
