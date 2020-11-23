@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:wallsy/models/pexels_api.dart';
+import 'package:wallsy/helpers/pexels_api.dart';
+import 'package:wallsy/models/pexels_data.dart';
 import 'package:wallsy/screens/search_screen.dart';
 import 'package:wallsy/widgets/app_title.dart';
 import 'package:wallsy/widgets/custom_listview_category.dart';
@@ -20,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       isLoading = true;
     });
-    PexelsData.getImages(PexelsData.homeUrl).then((value) => setState(() {
+    PexelsApi.getHomeImages(PexelsApi.homeUrl).then((value) => setState(() {
           isLoading = false;
         }));
 
@@ -32,7 +34,8 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         isScrollLoading = true;
       });
-      await PexelsData.getImages(PexelsData.homeUrl);
+      await PexelsApi.updataHomeImges(PexelsApi.homeUrl);
+
       setState(() {
         isScrollLoading = false;
       });
@@ -61,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
             onPressed: () {
               Navigator.push(
                   context,
-                  MaterialPageRoute(
+                  CupertinoPageRoute(
                     builder: (context) => SearchScreen(),
                   ));
             },
@@ -90,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   scrollController: _scrollController,
                   itemCount: PexelsData.pexelsPhotosData.length,
                   data: PexelsData.pexelsPhotosData,
-                  getPhoto: PexelsData.getHomePhoto,
+                  getPhoto: PexelsApi.getHomePhoto,
                 ),
           isScrollLoading ? CircularProgressIndicator() : SizedBox.shrink(),
         ],

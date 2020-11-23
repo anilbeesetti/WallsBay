@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:wallsy/models/pexels_api.dart';
+import 'package:wallsy/helpers/pexels_api.dart';
+import 'package:wallsy/models/pexels_data.dart';
 import 'package:wallsy/widgets/app_title.dart';
 import 'package:wallsy/widgets/custom_search_bar.dart';
 import 'package:wallsy/widgets/gridview_photos_builder.dart';
@@ -28,7 +29,7 @@ class _SearchScreenState extends State<SearchScreen> {
       setState(() {
         isScrollLoading = true;
       });
-      await PexelsData.updateImages();
+      await PexelsApi.updateSearchImages();
       setState(() {
         isScrollLoading = false;
       });
@@ -41,7 +42,7 @@ class _SearchScreenState extends State<SearchScreen> {
       setState(() {
         isLoading = true;
       });
-      PexelsData.searchImages(widget.searchString, PexelsData.defaultSearchUrl)
+      PexelsApi.getSearchImages(widget.searchString, PexelsApi.defaultUrl)
           .then((value) => setState(() {
                 isLoading = false;
               }));
@@ -90,8 +91,8 @@ class _SearchScreenState extends State<SearchScreen> {
                           setState(() {
                             isLoading = true;
                           });
-                          await PexelsData.searchImages(_textController.text,
-                              PexelsData.defaultSearchUrl);
+                          await PexelsApi.getSearchImages(
+                              _textController.text, PexelsApi.defaultUrl);
                           setState(() {
                             isLoading = false;
                           });
@@ -120,7 +121,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         scrollController: _scrollController,
                         itemCount: PexelsData.searchPhotosData.length,
                         data: PexelsData.searchPhotosData,
-                        getPhoto: PexelsData.getSearchPhoto,
+                        getPhoto: PexelsApi.getSearchPhoto,
                       ),
             isScrollLoading ? CircularProgressIndicator() : SizedBox.shrink(),
           ],

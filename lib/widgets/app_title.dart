@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class AppTitle extends StatelessWidget {
   const AppTitle({
@@ -7,19 +8,46 @@ class AppTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RichText(
-      text: TextSpan(
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26),
-        children: [
-          TextSpan(
-            text: 'Walls',
-            style: TextStyle(color: Colors.black87, fontFamily: 'Lato'),
+    return GestureDetector(
+      onLongPress: () {
+        showAboutDialog(
+          context: context,
+          applicationVersion: '1.0.0',
+          applicationIcon: FlutterLogo(
+            size: 40,
           ),
-          TextSpan(
-            text: 'Bay',
-            style: TextStyle(color: Colors.blue, fontFamily: 'Lato'),
-          ),
-        ],
+          children: [
+            Text(
+              'CodeInit',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Row(
+              children: [
+                Text('Developer: '),
+                Text('Anil Beesetti'),
+              ],
+            ),
+          ],
+        );
+        HapticFeedback.mediumImpact();
+      },
+      child: RichText(
+        text: TextSpan(
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26),
+          children: [
+            TextSpan(
+              text: 'Walls',
+              style: TextStyle(color: Colors.black87, fontFamily: 'Lato'),
+            ),
+            TextSpan(
+              text: 'Bay',
+              style: TextStyle(color: Colors.blue, fontFamily: 'Lato'),
+            ),
+          ],
+        ),
       ),
     );
   }

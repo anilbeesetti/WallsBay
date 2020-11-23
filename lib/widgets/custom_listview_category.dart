@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wallsy/models/pexels_api.dart';
+import 'package:wallsy/models/pexels_data.dart';
 import 'package:wallsy/screens/search_screen.dart';
 
 class CustomListViewCategory extends StatelessWidget {

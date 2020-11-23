@@ -3,8 +3,10 @@ class ImageModel {
   final String portrait;
   final String landscape;
   final String large;
+  final String medium;
 
-  const ImageModel({this.large, this.original, this.portrait, this.landscape});
+  const ImageModel(
+      {this.medium, this.large, this.original, this.portrait, this.landscape});
 }
 
 class PhotoObjectModel {
