@@ -3,7 +3,6 @@ import 'package:gallery_saver/gallery_saver.dart';
 
 import 'package:toast/toast.dart';
 import 'package:wallsy/models/image_model.dart';
-import 'package:ndialog/ndialog.dart';
 
 class DownloadButton extends StatelessWidget {
   const DownloadButton({
@@ -18,36 +17,47 @@ class DownloadButton extends StatelessWidget {
     return FlatButton.icon(
       icon: Icon(Icons.download_outlined),
       label: Text('Download'),
-      onPressed: () {
-        SimpleDialog(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 20, top: 10, bottom: 10),
-              child: Text(
-                'Download',
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 20,
-                ),
-              ),
-            ),
-            ListTileButton(
-              id: photoData.imageId,
-              title: 'Orginal Image',
-              photo: photoData.image.original,
-            ),
-            ListTileButton(
-              id: photoData.imageId,
-              title: 'Portrait Image',
-              photo: photoData.image.portrait,
-            ),
-            ListTileButton(
-              id: photoData.imageId,
-              title: 'Landscape Image',
-              photo: photoData.image.landscape,
-            ),
-          ],
-        ).show(context);
+      onPressed: () async {
+        var response;
+        try {
+          Toast.show('Downloading Started...', context,
+              duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+          response = await GallerySaver.saveImage(photoData.image.original);
+        } catch (e) {
+          print(e);
+          response = false;
+        }
+        Toast.show(response ? 'Download Complete' : 'Download Error', context,
+            duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+        // SimpleDialog(
+        //   children: [
+        //     Padding(
+        //       padding: const EdgeInsets.only(left: 20, top: 10, bottom: 10),
+        //       child: Text(
+        //         'Download',
+        //         style: TextStyle(
+        //           fontWeight: FontWeight.w500,
+        //           fontSize: 20,
+        //         ),
+        //       ),
+        //     ),
+        //     ListTileButton(
+        //       id: photoData.imageId,
+        //       title: 'Orginal Image',
+        //       photo: photoData.image.original,
+        //     ),
+        //     ListTileButton(
+        //       id: photoData.imageId,
+        //       title: 'Portrait Image',
+        //       photo: photoData.image.portrait,
+        //     ),
+        //     ListTileButton(
+        //       id: photoData.imageId,
+        //       title: 'Landscape Image',
+        //       photo: photoData.image.landscape,
+        //     ),
+        //   ],
+        // ).show(context);
       },
     );
   }
